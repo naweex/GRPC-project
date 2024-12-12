@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package echoPackage;
+
+message EchoMessage {
+    string value = 1;
+}
+
+service EchoService {
+    rpc EchoUnary (EchoMessage) returns (EchoMessage);
+    rpc EchoClientStream (stream EchoMessage) returns (EchoMessage);
+    rpc EchoServerStream (EchoMessage) returns (stream EchoMessage);
+    rpc BidiStream (stream EchoMessage) returns (stream EchoMessage);
+}
