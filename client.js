@@ -19,6 +19,7 @@ setTimeout(() => {
         console.log(data);
     })
 } , 300)
+
 serverStream.on('end' , (error) => {
     console.log('error' , error);
 })
@@ -28,4 +29,25 @@ const echos = [
     {value : 'value3'},
     {value : 'value4'},
 ]
-const clientStream = client.EchoClientStream(echos);
+const clientStream = client.EchoClientStream(null , (err,res) => {
+    console.log(res);  
+});
+let index = 0
+setInterval(function () {
+    clientStream.write(echos[index])
+    index++
+    if(index == echos.length) {
+        clientStream.end()
+        clearInterval(this)
+    }
+    
+}, 300)
+
+
+const dateTime = client.dateTime();
+setInterval(() => {
+    dateTime.write({value : new Date().toLocaleString()})
+}, 1000);
+dateTime.on("data", data => {
+    console.log("Client DateTime: ", data);
+})
