@@ -11,10 +11,13 @@ function EchoUnary(call,callBack){
     callBack(null , {message : 'recived'})
 }
 function EchoClientStream(call,callBack){
+    const list = []
     call.on('data' , data => {
-        console.log(data);
+        list.push(data)
+        console.log('server : ' ,data);
     })
     call.on('end' , error => {
+        console.log(list);
         console.log(error);
         
     })
@@ -29,13 +32,21 @@ function EchoServerStream(call,callBack){
         console.log(error);
     })
 }
-function BidiStream(call,callBack){}
+function dateTime(call, callback) {
+    call.on("data", data => {
+        console.log("server dateTime : ", data);
+        call.write({value : new Date().toLocaleString()})
+    })
+    call.on("end", err => {
+        console.log(err);
+    })
+}
 
 server.addService(echoPackage.EchoService.service , {
     EchoUnary,
     EchoClientStream,
     EchoServerStream,
-    BidiStream
+    dateTime
 })
 
 server.bindAsync(serverURL, grpc.ServerCredentials.createInsecure(), () => {
