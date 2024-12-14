@@ -12,7 +12,7 @@ message EchoMessage {
 message Empty {}
 service EchoService {
     rpc EchoUnary (EchoMessage) returns (EchoMessage);
-    rpc EchoClientStream (stream EchosList) returns (EchoMessage);
+    rpc EchoClientStream (stream EchoMessage) returns (EchosList);
     rpc EchoServerStream (Empty) returns (stream EchoMessage);
-    rpc BidiStream (stream EchoMessage) returns (stream EchoMessage);
+    rpc dateTime (stream EchoMessage) returns (stream EchoMessage);
 }
